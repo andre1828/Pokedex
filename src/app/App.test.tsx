@@ -1,4 +1,4 @@
-// import App from '@app/App';
+import App from '@app/App';
 // import { fireEvent, render, screen } from '@testing-library/react';
 
 // test('count is 0 at first', () => {
