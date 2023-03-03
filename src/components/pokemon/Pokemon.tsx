@@ -9,8 +9,8 @@ const ImageContainer = styled.div`
 `;
 
 const NationalNumber = styled.p`
-  color: '#919191';
-  margin-top: '8px';
+  color: #919191;
+  margin-top: 8px;
 `;
 
 const PokemonName = styled.h5`
