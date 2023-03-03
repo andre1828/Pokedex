@@ -1,5 +1,8 @@
 import styled from 'styled-components';
 import { v1 as uuid } from 'uuid';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar, faStarHalf } from '@fortawesome/free-regular-svg-icons';
+import { useState } from 'react';
 
 const ImageContainer = styled.div`
   background-color: #f2f2f2;
@@ -37,6 +40,16 @@ const TypeName = styled.span`
   padding: 2px 23px;
   width: 38.5%;
   font-size: 11px;
+`;
+
+const FavoriteIcon = styled(FontAwesomeIcon)`
+  margin-left: 5px;
+  display: ${(props) => (props.isvisible === 'true' ? 'inline-block' : 'none')};
+  cursor: pointer;
+
+  figure:hover & {
+    display: inline-block;
+  }
 `;
 
 const imgURL = (nationalNumber: string) =>
@@ -122,17 +135,28 @@ interface PokemonProps {
 }
 
 const Pokemon = ({ nationalNumber, name, type }: PokemonProps) => {
+  const [isFavorite, setIsFavorite] = useState(false);
+  const favoriteIcon = isFavorite ? faStar : faStarHalf;
+
   return (
     <figure>
       <ImageContainer>
-        <img src={imgURL(nationalNumber)} alt="" />
+        <img src={imgURL(nationalNumber)} alt={name} />
       </ImageContainer>
       <NationalNumber>
         <span style={{ fontStyle: 'italic' }}>#</span>
         {nationalNumber}
       </NationalNumber>
       <figcaption>
-        <PokemonName>{name}</PokemonName>
+        <PokemonName>
+          {name}
+          <FavoriteIcon
+            icon={favoriteIcon}
+            isvisible={isFavorite.toString()}
+            onClick={() => setIsFavorite(!isFavorite)}
+            data-testid="favorite-icon"
+          />
+        </PokemonName>
       </figcaption>
       <TypesContainer>
         {type.map((type) => (
