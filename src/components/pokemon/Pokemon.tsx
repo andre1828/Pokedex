@@ -30,7 +30,7 @@ const Type = styled.div`
   vertical-align: baseline;
 `;
 
-const TypeName = styled.span`
+const TypeName = styled.span<{ backgroundColor: string; fontColor: string }>`
   border-radius: 3px;
   line-height: 18px;
   background-color: ${(props) => props.backgroundColor};
@@ -42,7 +42,7 @@ const TypeName = styled.span`
   font-size: 11px;
 `;
 
-const FavoriteIcon = styled(FontAwesomeIcon)`
+const FavoriteIcon = styled(FontAwesomeIcon)<{ isvisible: string }>`
   margin-left: 5px;
   display: ${(props) => (props.isvisible === 'true' ? 'inline-block' : 'none')};
   cursor: pointer;
@@ -55,30 +55,49 @@ const FavoriteIcon = styled(FontAwesomeIcon)`
 const imgURL = (nationalNumber: string) =>
   `https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${nationalNumber}.png`;
 
-/* 
-  bug #729f3f #fff
-  dragon linear-gradient(180deg, #53a4cf 50%, #f16e57 50%) #fff
-  fairy #fdb9e9 #212121
-  fire #fd7d24 #fff
-  ghost #7b62a3 #fff
-  ground linear-gradient(180deg, #f7de3f 50%, #ab9842 50%) #212
-  normal  #a4acaf #212
-  pyschic#f366b9 #fff
-  steel #9eb7b8 #212
-  dark #707070 #fff
-  eletric #eed535 #212
-  fighting #d56723 #fff
-  flying linear-gradient(180deg, #3dc7ef 50%, #bdb9b8 50%) #212
-  grass #9bcc50 #212
-  ice #51c4e7 #212
-  poison #b97fc9 #fff
-  rock #a38c21 #fff
-  water #4592c4 #fff
+type PokemonType =
+  | 'Bug'
+  | 'Dragon'
+  | 'Fairy'
+  | 'Fire'
+  | 'Ghost'
+  | 'Ground'
+  | 'Normal'
+  | 'Psychic'
+  | 'Steel'
+  | 'Dark'
+  | 'Electric'
+  | 'Fighting'
+  | 'Flying'
+  | 'Grass'
+  | 'Ice'
+  | 'Poison'
+  | 'Rock'
+  | 'Water';
 
+interface ColorMap {
+  Bug: string;
+  Dragon: string;
+  Fairy: string;
+  Fire: string;
+  Ghost: string;
+  Ground: string;
+  Normal: string;
+  Psychic: string;
+  Steel: string;
+  Dark: string;
+  Electric: string;
+  Fighting: string;
+  Flying: string;
+  Grass: string;
+  Ice: string;
+  Poison: string;
+  Rock: string;
+  Water: string;
+}
 
-  */
-const getTypeFontColor = (type: string) => {
-  const colorMap = {
+const getTypeFontColor = (type: PokemonType) => {
+  const colorMap: ColorMap = {
     Bug: '#fff',
     Dragon: '#fff',
     Fairy: '#212',
@@ -99,12 +118,12 @@ const getTypeFontColor = (type: string) => {
     Water: '#fff'
   };
 
-  const result = colorMap[type] || undefined;
+  const result = colorMap[type];
   return result;
 };
 
-const getTypeBackgroundColor = (type: string) => {
-  const colorMap = {
+const getTypeBackgroundColor = (type: PokemonType) => {
+  const colorMap: ColorMap = {
     Bug: '#729f3f',
     Dragon: 'linear-gradient(180deg, #53a4cf 50%, #f16e57 50%)',
     Fairy: '#fdb9e9',
@@ -125,7 +144,7 @@ const getTypeBackgroundColor = (type: string) => {
     Water: '#4592c4'
   };
 
-  return colorMap[type] || undefined;
+  return colorMap[type];
 };
 
 interface PokemonProps {
@@ -161,7 +180,10 @@ const Pokemon = ({ nationalNumber, name, type }: PokemonProps) => {
       <TypesContainer>
         {type.map((type) => (
           <Type key={uuid()}>
-            <TypeName backgroundColor={getTypeBackgroundColor(type)} fontColor={getTypeFontColor(type)}>
+            <TypeName
+              backgroundColor={getTypeBackgroundColor(type as PokemonType)}
+              fontColor={getTypeFontColor(type as PokemonType)}
+            >
               {type}
             </TypeName>
           </Type>
