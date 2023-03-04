@@ -5,9 +5,11 @@ import Pokemon from 'src/components/pokemon';
 import bg from 'src/assets/body_bg.png';
 import Search from 'src/components/search';
 import { useState } from 'react';
+import EmptyListMessage from 'src/components/empty-list-message';
 
 const Container = styled.div`
   width: 90%;
+  height: max-content;
   margin-left: auto;
   margin-right: auto;
   background: #fff;
@@ -46,13 +48,17 @@ const Pokedex = () => {
   return (
     <Container>
       <Search handleSearchChange={handleSearchChange} />
-      <PokemonList>
-        {searchResults.map((pokemon) => (
-          <li key={uuid()}>
-            <Pokemon nationalNumber={pokemon.national_number} name={pokemon.name} type={pokemon.type} />
-          </li>
-        ))}
-      </PokemonList>
+      {searchResults.length ? (
+        <PokemonList>
+          {searchResults.map((pokemon) => (
+            <li key={uuid()}>
+              <Pokemon nationalNumber={pokemon.national_number} name={pokemon.name} type={pokemon.type} />
+            </li>
+          ))}
+        </PokemonList>
+      ) : (
+        <EmptyListMessage />
+      )}
     </Container>
   );
 };
