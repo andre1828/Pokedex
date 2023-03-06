@@ -49,7 +49,7 @@ const InfoText = styled.h4`
 `;
 
 interface SearchProps {
-  handleSearchChange: (searchTerm: string) => void;
+  handleSearchChange: (obj: { type: string; searchTerm: string }) => void;
 }
 const Search = ({ handleSearchChange }: SearchProps) => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -59,7 +59,7 @@ const Search = ({ handleSearchChange }: SearchProps) => {
       <div>
         <SearchTitle>Name or Number</SearchTitle>
         <SearchInput type="text" onKeyUp={(e) => setSearchTerm(e.target.value)} />
-        <SearchButton type="submit" onClick={() => handleSearchChange(searchTerm)}>
+        <SearchButton type="submit" onClick={() => handleSearchChange({ type: 'search_term_changed', searchTerm })}>
           <img src={searchIcon} alt="" />
         </SearchButton>
         <Subtitle>
