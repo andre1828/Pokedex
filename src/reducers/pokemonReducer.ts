@@ -1,9 +1,9 @@
 import { useReducer } from 'react';
-import pokemons from 'src/assets/pokemons.json';
 
 const initialState = {
-  pokemons: pokemons.results,
-  filteredPokemons: pokemons.results,
+  isLoading: false,
+  pokemons: [],
+  filteredPokemons: [],
   isShowFavoritesOnly: false,
   isDoingSeach: false
 };
@@ -11,6 +11,16 @@ const initialState = {
 const usePokemonReducer = () => {
   const pokemonReducer = (state, action) => {
     switch (action.type) {
+      case 'loading_pokemons_changed': {
+        if (action.isLoading === true) {
+          return initialState;
+        } else {
+          return {
+            ...initialState,
+            filteredPokemons: action.pokemons
+          };
+        }
+      }
       case 'search_term_changed': {
         if (action.searchTerm === '') {
           return {

@@ -5,6 +5,7 @@ import bg from 'src/assets/body_bg.png';
 import Search from 'src/components/search';
 import EmptyListMessage from 'src/components/empty-list-message';
 import usePokemonReducer from 'src/reducers';
+import { useEffect } from 'react';
 
 const Container = styled.div`
   width: 90%;
@@ -43,6 +44,14 @@ const FilterableList = styled.div`
 const Pokedex = () => {
   const [state, dispatch] = usePokemonReducer();
 
+  useEffect(() => {
+    dispatch({ type: 'loading_pokemons_changed', isLoading: true });
+    fetch('https://unpkg.com/pokemons@1.1.0/pokemons.json')
+      .then((res) => res.json())
+      .then((pokemons) => dispatch({ type: 'loading_pokemons_changed', isLoading: false, pokemons: pokemons.results }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <Container>
       <Search handleSearchChange={dispatch} />
@@ -53,7 +62,7 @@ const Pokedex = () => {
         >
           Exibir somente favoritos
         </ShowFavoritesButton>
-        {state.filteredPokemons.length ? (
+        {!state.isLoading ? (
           <PokemonList>
             {state.filteredPokemons.map((pokemon) => (
               <li key={uuid()}>
